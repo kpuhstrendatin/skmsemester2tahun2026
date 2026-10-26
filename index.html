@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Survei Kepuasan Masyarakat – KPU Kabupaten Hulu Sungai Tengah 2026</title>
+<style>
+:root{--bg:#f6f1f0;--card:#fff;--ink:#241a1a;--mut:#6b5b5b;--line:#e3d6d4;--pri:#9b1c24;--pri2:#7a1219;--soft:#fbeeee;--ok:#1d7a46;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171212;--card:#221a1a;--ink:#f3eaea;--mut:#b5a3a3;--line:#3a2d2d;--pri:#e0525a;--pri2:#c93f47;--soft:#2e1d1e;--ok:#4cc585}}
+:root[data-theme="dark"]{--bg:#171212;--card:#221a1a;--ink:#f3eaea;--mut:#b5a3a3;--line:#3a2d2d;--pri:#e0525a;--pri2:#c93f47;--soft:#2e1d1e;--ok:#4cc585}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.hero{background:linear-gradient(135deg,#7a1219,#b3262e);color:#fff;padding:32px 20px 56px;text-align:center}
+.hero small{letter-spacing:.12em;text-transform:uppercase;opacity:.85;font-size:12px}
+.hero h1{margin:8px auto 6px;font-size:clamp(22px,5vw,32px);line-height:1.25;max-width:720px}
+.hero p{margin:0 auto;max-width:620px;opacity:.92}
+main{max-width:720px;margin:-36px auto 40px;padding:0 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:14px}
+.card h2{margin:0 0 4px;font-size:18px;color:var(--pri)}
+.card .sub{margin:0 0 14px;color:var(--mut);font-size:14px}
+label.q,.q-t{display:block;font-weight:600;margin:16px 0 6px}
+.req{color:var(--pri)}
+input[type=text],input[type=email],input[type=date],select,textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);font:inherit}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--pri);outline-offset:1px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:9px;margin:6px 0;cursor:pointer}
+.opt:has(input:checked){border-color:var(--pri);background:var(--soft)}
+.opt input{margin-top:4px;accent-color:var(--pri)}
+.opt span b{display:block;font-weight:500}
+.err{border-color:var(--pri)!important}
+.msg{color:var(--pri);font-size:13px;margin-top:4px;display:none}
+.q-block.bad .msg{display:block}
+.prog{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:8px 0;font-size:13px;color:var(--mut)}
+.bar{height:6px;background:var(--line);border-radius:9px;overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;width:0;background:var(--pri);transition:width .25s}
+.btns{display:flex;gap:10px;justify-content:space-between;margin-top:6px}
+button{font:inherit;font-weight:600;padding:12px 22px;border-radius:10px;border:1px solid var(--pri);cursor:pointer}
+.p{background:var(--pri);color:#fff}.p:hover{background:var(--pri2)}
+.s{background:transparent;color:var(--pri)}
+.res{text-align:center}
+.score{font-size:54px;font-weight:700;color:var(--pri);line-height:1}
+.badge{display:inline-block;margin:10px 0;padding:5px 14px;border-radius:99px;background:var(--soft);color:var(--pri);font-weight:600}
+.row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);text-align:left;font-size:14px}
+footer{text-align:center;color:var(--mut);font-size:12px;padding:0 14px 24px}
+.hide{display:none}
+</style>
+</head>
+<body>
+<header class="hero">
+  <small>KPU Kabupaten Hulu Sungai Tengah · Tahun 2026</small>
+  <h1>Survei Kepuasan Masyarakat (SKM)</h1>
+  <p><b>Bersama Anda, Kami Terus Berbenah.</b> Penilaian dan masukan Anda membantu kami menjadi institusi yang lebih baik, terbuka, responsif, dan amanah. ⏱️ Pengisian ±2–3 menit. Tidak ada jawaban benar atau salah.</p>
+</header>
+<main>
+  <div class="prog" id="prog"><span id="progT">Terisi 0%</span><div class="bar"><i id="progB"></i></div></div>
+  <form id="f" novalidate>
+    <section class="card">
+      <h2>Demografi Responden</h2>
+      <p class="sub">Tanda <span class="req">*</span> wajib diisi.</p>
+      <div class="q-block" data-k="nama"><label class="q" for="nama">Nama Lengkap <span class="req">*</span></label><input type="text" id="nama" autocomplete="name"><div class="msg">Nama lengkap wajib diisi.</div></div>
+      <div class="q-block" data-k="tgl"><label class="q" for="tgl">Tanggal Menerima Layanan <span class="req">*</span></label><input type="date" id="tgl" min="2026-10-01" max="2026-12-31"><div class="sub" style="margin:4px 0 0">Periode layanan Semester II: 1 Oktober – 31 Desember 2026.</div><div class="msg">Pilih tanggal dalam periode 1 Oktober – 31 Desember 2026.</div></div>
+      <div class="q-block" data-k="layanan"><span class="q-t">Jenis layanan yang diterima <span class="req">*</span></span><div id="layanan"></div><div class="msg">Pilih jenis layanan yang Anda terima.</div></div>
+      <div class="q-block" data-k="jk"><span class="q-t">Jenis Kelamin <span class="req">*</span></span><div id="jk"></div><div class="msg">Pilih salah satu.</div></div>
+      <div class="q-block" data-k="pend"><label class="q" for="pend">Pendidikan <span class="req">*</span></label><select id="pend"></select><div class="msg">Pilih pendidikan.</div></div>
+      <div class="q-block" data-k="usia"><label class="q" for="usia">Usia</label><select id="usia"></select></div>
+      <div class="q-block" data-k="kerja"><span class="q-t">Pekerjaan <span class="req">*</span></span><div id="kerja"></div><input type="text" id="kerjaLain" class="hide" placeholder="Tuliskan pekerjaan Anda" style="margin-top:6px"><div class="msg">Pilih pekerjaan.</div></div>
+      <div class="q-block" data-k="dis"><span class="q-t">Apakah Anda penyandang disabilitas / pendamping penyandang disabilitas? <span class="req">*</span></span><div id="dis"></div><div class="msg">Pilih salah satu.</div></div>
+    </section>
+
+    <section class="card">
+      <h2>Penilaian Pelayanan</h2>
+      <p class="sub">Pilih jawaban yang paling sesuai dengan pengalaman Anda saat menerima layanan.</p>
+      <div id="unsur"></div>
+    </section>
+
+    <section class="card">
+      <h2>Kritik &amp; Saran</h2>
+      <label class="q" for="saran">Masukan untuk peningkatan layanan KPU Kabupaten Hulu Sungai Tengah</label>
+      <textarea id="saran" rows="4" placeholder="Tuliskan kritik atau saran Anda (opsional)"></textarea>
+    </section>
+
+    <div class="btns"><button type="reset" class="s" id="reset">Bersihkan formulir</button><button type="submit" class="p">Kirim Survei</button></div>
+  </form>
+
+  <section class="card res hide" id="res">
+    <h2>Terima kasih atas penilaian Anda 🙏</h2>
+    <p class="sub">Kini giliran kami membuktikan kepercayaan Anda.</p>
+    <div class="score" id="ikm">0</div>
+    <div class="sub" style="margin:4px 0 0">Nilai kepuasan Anda (skala 25–100)</div>
+    <div class="badge" id="mutu"></div>
+    <div id="detail"></div>
+    <p class="sub" id="note" style="margin-top:12px;color:var(--pri)"></p>
+    <div class="btns" style="justify-content:center;margin-top:16px"><button class="s" id="again">Isi survei lagi</button></div>
+  </section>
+</main>
+<footer>© 2026 KPU Kabupaten Hulu Sungai Tengah · Survei Kepuasan Masyarakat</footer>
+
+<script>
+(function(){
+// Isi dengan URL Web App Google Apps Script (lihat petunjuk). Jika kosong, data TIDAK dikirim (mode uji).
+var SCRIPT_URL='https://script.google.com/macros/s/AKfycbwa9CvNHjS-Ysk2XF9AXEw-DeLIrKiD_fH0fQWFeQtIXNYEy_diGqNE-9BscUKyJxyFkA/exec';
+var U=[
+[
+"A. Persyaratan",
+"Informasi Pelayanan tersedia melalui media elektronik maupun non-elektronik",
+[
+"Sangat Tidak Setuju",
+"Tidak Setuju",
+"Setuju",
+"Sangat Setuju"
+]
+],
+[
+"A. Persyaratan",
+"Kesesuaian persyaratan dengan informasi yang diberikan",
+[
+"Sangat Tidak Sesuai",
+"Tidak Sesuai",
+"Sesuai",
+"Sangat Sesuai"
+]
+],
+[
+"B. Prosedur",
+"Standar dan prosedur layanan diinformasikan dengan jelas",
+[
+"Sangat Tidak Setuju",
+"Tidak Setuju",
+"Setuju",
+"Sangat Setuju"
+]
+],
+[
+"B. Prosedur",
+"Prosedur/Alur layanan mudah dipahami dan dilakukan",
+[
+"Sangat Tidak Setuju",
+"Tidak Setuju",
+"Setuju",
+"Sangat Setuju"
+]
+],
+[
+"B. Prosedur",
+"Layanan diberikan sesuai prosedur tanpa kecurangan",
+[
+"Sangat Tidak Setuju",
+"Tidak Setuju",
+"Setuju",
+"Sangat Setuju"
+]
+],
+[
+"C. Waktu",
+"Jangka waktu layanan sesuai dengan yang diinformasikan",
+[
+"Sangat Tidak Sesuai",
+"Tidak Sesuai",
+"Sesuai",
+"Sangat Sesuai"
+]
+],
+[
+"D. Biaya",
+"Biaya layanan sesuai dengan yang diinformasikan",
+[
+"Sangat Tidak Sesuai",
+"Tidak Sesuai",
+"Sesuai",
+"Sangat Sesuai"
+]
+],
+[
+"D. Biaya",
+"Tidak ada pungutan liar (pungli) dalam pelayanan",
+[
+"Sangat Tidak Setuju",
+"Tidak Setuju",
+"Setuju",
+"Sangat Setuju"
+]
+],
+[
+"D. Biaya",
+"Tidak ada percaloan/perantara tidak resmi dalam pelayanan",
+[
+"Sangat Tidak Setuju",
+"Tidak Setuju",
+"Setuju",
+"Sangat Setuju"
+]
+],
+[
+"E. Produk",
+"Produk layanan yang diterima sesuai dengan yang dipublikasikan",
+[
+"Sangat Tidak Sesuai",
+"Tidak Sesuai",
+"Sesuai",
+"Sangat Sesuai"
+]
+],
+[
+"F. Kompetensi",
+"Petugas pelayanan memiliki pengetahuan dan kemampuan yang memadai dalam memberikan layanan sesuai dengan kebutuhan pengguna layanan.",
+[
+"Sangat Tidak Setuju",
+"Tidak Setuju",
+"Setuju",
+"Sangat Setuju"
+]
+],
+[
+"G. Perilaku",
+"Petugas pelayanan bersikap ramah, sopan, dan membantu selama proses pelayanan berlangsung.",
+[
+"Sangat Tidak Setuju",
+"Tidak Setuju",
+"Setuju",
+"Sangat Setuju"
+]
+],
+[
+"G. Perilaku",
+"Seluruh pengguna layanan dilayani secara adil tanpa diskriminasi",
+[
+"Sangat Tidak Setuju",
+"Tidak Setuju",
+"Setuju",
+"Sangat Setuju"
+]
+],
+[
+"G. Perilaku",
+"Pelayanan diberikan tanpa imbalan uang, barang, atau fasilitas di luar aturan",
+[
+"Sangat Tidak Setuju",
+"Tidak Setuju",
+"Setuju",
+"Sangat Setuju"
+]
+],
+[
+"H. Konsultasi dan Pengaduan",
+"Layanan konsultasi dan pengaduan mudah diakses",
+[
+"Sangat Tidak Setuju",
+"Tidak Setuju",
+"Setuju",
+"Sangat Setuju"
+]
+],
+[
+"I. Sarana dan Prasarana",
+"Sarana dan prasarana pelayanan tersedia dengan baik dan mendukung kelancaran proses pelayanan.",
+[
+"Sangat Tidak Setuju",
+"Tidak Setuju",
+"Setuju",
+"Sangat Setuju"
+]
+]
+];
+var $=function(i){return document.getElementById(i)};
+function radios(box,name,list,cb){$(box).innerHTML=list.map(function(t,i){return '<label class="opt"><input type="radio" name="'+name+'" value="'+t+'"><span>'+t+'</span></label>'}).join('')}
+radios('layanan','layanan',['Layanan Pejabat Pengelola Informasi dan Dokumentasi (PPID)','Layanan Pendidikan Pemilih','Layanan Pengaduan Masyarakat','Layanan Kerjasama','Layanan Pemutakhiran Data Pemilih','Layanan Verifikasi dan Pemutakhiran Data Partai Politik']);
+radios('jk','jk',['Laki-Laki','Perempuan']);
+radios('dis','dis',['Ya','Tidak']);
+radios('kerja','kerja',['ASN','TNI','POLRI','Swasta','Wirausaha','Ibu Rumah Tangga','Pelajar/Mahasiswa','Petani/Nelayan','Pekerja Lepas/Freelance','Pensiun','Lainnya']);
+function sel(id,list){$(id).innerHTML='<option value="">Pilih</option>'+list.map(function(t){return '<option>'+t+'</option>'}).join('')}
+sel('pend',['Tidak Sekolah','SD/Sederajat','SMP/Sederajat','SMA/Sederajat','D1/D2/D3','D4/S1','S2','S3']);
+sel('usia',['< 17 Tahun','17-25 Tahun','26-34 Tahun','35-44 Tahun','45-54 Tahun','55-65 Tahun','> 65 Tahun']);
+var last='';
+$('unsur').innerHTML=U.map(function(u,n){
+  var h=u[0]!==last?'<h3 style="margin:22px 0 0;font-size:15px;color:var(--pri);border-bottom:1px solid var(--line);padding-bottom:4px">'+u[0]+'</h3>':'';last=u[0];
+  return h+'<div class="q-block" data-k="u'+n+'"><span class="q-t">'+(n+1)+'. '+u[1]+' <span class="req">*</span></span>'+
+  u[2].map(function(o,i){return '<label class="opt"><input type="radio" name="u'+n+'" value="'+(i+1)+'"><span>'+'ABCD'[i]+'. '+o+'</span></label>'}).join('')+
+  '<div class="msg">Pilih salah satu penilaian.</div></div>'}).join('');
+
+var f=$('f');
+function val(n){var c=f.querySelector('input[name="'+n+'"]:checked');return c?c.value:''}
+function progress(){
+  var total=7+U.length,done=0;
+  if(val('layanan'))done++;
+  if($('nama').value.trim())done++;
+  if($('tgl').value)done++;
+  if(val('jk'))done++;
+  if($('pend').value)done++;
+  if(val('kerja'))done++;
+  if(val('dis'))done++;
+  U.forEach(function(_,n){if(val('u'+n))done++});
+  var p=Math.round(done/total*100);
+  $('progB').style.width=p+'%';$('progT').textContent='Terisi '+p+'% ('+done+' dari '+total+' pertanyaan wajib)';
+}
+f.addEventListener('input',function(e){
+  if(e.target.name==='kerja')$('kerjaLain').classList.toggle('hide',val('kerja')!=='Lainnya');
+  var b=e.target.closest('.q-block');if(b)b.classList.remove('bad');
+  progress();
+});
+f.addEventListener('reset',function(){setTimeout(function(){$('kerjaLain').classList.add('hide');progress()},0)});
+
+function mutu(s){
+  if(s>=88.31)return 'Mutu A – Sangat Baik';
+  if(s>=76.61)return 'Mutu B – Baik';
+  if(s>=65)return 'Mutu C – Kurang Baik';
+  return 'Mutu D – Tidak Baik';
+}
+f.addEventListener('submit',function(e){
+  e.preventDefault();
+  var bad=[];
+  function chk(k,ok){var b=f.querySelector('[data-k="'+k+'"]');if(!b)return;b.classList.toggle('bad',!ok);if(!ok)bad.push(b)}
+  chk('layanan',!!val('layanan'));
+  chk('nama',!!$('nama').value.trim());
+  var t=$('tgl').value;chk('tgl',!!t&&t>='2026-10-01'&&t<='2026-12-31');
+  chk('jk',!!val('jk'));chk('pend',!!$('pend').value);
+  chk('kerja',!!val('kerja')&&(val('kerja')!=='Lainnya'||!!$('kerjaLain').value.trim()));
+  chk('dis',!!val('dis'));
+  U.forEach(function(_,n){chk('u'+n,!!val('u'+n))});
+  if(bad.length){bad[0].scrollIntoView({behavior:'smooth',block:'center'});return}
+  var sum=0,rows='';
+  U.forEach(function(u,n){var v=+val('u'+n);sum+=v;rows+='<div class="row"><span>'+(n+1)+'. '+u[1].slice(0,60)+(u[1].length>60?'…':'')+'</span><b>'+u[2][v-1]+' ('+v+')</b></div>'});
+  var ikm=Math.round(sum/U.length*25*100)/100;
+  $('ikm').textContent=ikm.toFixed(2);$('mutu').textContent=mutu(ikm);$('detail').innerHTML=rows;
+  var pay={waktu_kirim:new Date().toISOString(),nama:$('nama').value.trim(),tanggal_layanan:t,jenis_layanan:val('layanan'),jenis_kelamin:val('jk'),pendidikan:$('pend').value,usia:$('usia').value,
+    pekerjaan:val('kerja')==='Lainnya'?'Lainnya: '+$('kerjaLain').value.trim():val('kerja'),disabilitas:val('dis')};
+  U.forEach(function(u,n){pay['U'+(n+1)+' '+u[0].replace(/&amp;/g,'&')]=+val('u'+n)});
+  pay.rata_rata=Math.round(sum/U.length*100)/100;pay.nilai_ikm=ikm;pay.mutu=mutu(ikm);pay.saran=$('saran').value.trim();
+  var btn=f.querySelector('button[type=submit]'),old=btn.textContent;btn.disabled=true;btn.textContent='Mengirim…';
+  function show(note){
+    $('note').textContent=note||'';
+    f.classList.add('hide');$('prog').classList.add('hide');$('res').classList.remove('hide');
+    btn.disabled=false;btn.textContent=old;window.scrollTo({top:0,behavior:'smooth'});
+  }
+  if(!SCRIPT_URL){show('Mode uji: SCRIPT_URL belum diisi sehingga jawaban belum tersimpan ke Google Sheets.');return}
+  fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(pay)})
+    .then(function(){show('')})
+    .catch(function(){btn.disabled=false;btn.textContent=old;alert('Gagal mengirim. Periksa koneksi internet Anda lalu coba lagi.')});
+});
+$('again').addEventListener('click',function(){
+  f.reset();f.classList.remove('hide');$('prog').classList.remove('hide');$('res').classList.add('hide');progress();window.scrollTo({top:0,behavior:'smooth'});
+});
+progress();
+})();
+</script>
+</body>
+</html>
