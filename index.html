@@ -65,6 +65,8 @@ footer{text-align:center;color:var(--mut);font-size:12px;padding:0 14px 24px}
 .pc.off em{background:var(--line);color:var(--mut)}
 .back{background:var(--card);color:var(--pri);border:1px solid var(--line);border-radius:99px;padding:7px 16px;margin:0 0 10px;font-weight:600;cursor:pointer}
 main{position:relative;z-index:2}
+#next,#send{margin-left:auto}
+.sh{margin:22px 0 0;font-size:15px;color:var(--pri);border-bottom:1px solid var(--line);padding-bottom:4px}
 </style>
 </head>
 <body>
@@ -91,32 +93,25 @@ main{position:relative;z-index:2}
   <button type="button" class="back" id="backTop">← Ganti periode</button>
   <div class="prog" id="prog"><span id="progT">Terisi 0%</span><div class="bar"><i id="progB"></i></div></div>
   <form id="f" novalidate>
-    <section class="card">
+    <section class="card step" data-title="Data Responden">
       <h2>Demografi Responden</h2>
       <p class="sub">Tanda <span class="req">*</span> wajib diisi.</p>
       <div class="q-block" data-k="nama"><label class="q" for="nama">Nama Lengkap <span class="req">*</span></label><input type="text" id="nama" autocomplete="name"><div class="msg">Nama lengkap wajib diisi.</div></div>
       <div class="q-block" data-k="tgl"><label class="q" for="tgl">Tanggal Menerima Layanan <span class="req">*</span></label><input type="date" id="tgl"><div class="sub" style="margin:4px 0 0"><span id="tglHint"></span></div><div class="msg" id="tglMsg">Pilih tanggal sesuai periode.</div></div>
-      <div class="q-block" data-k="layanan"><span class="q-t">Jenis layanan yang diterima <span class="req">*</span></span><div id="layanan"></div><div class="msg">Pilih jenis layanan yang Anda terima.</div></div>
+      <div class="q-block" data-k="layanan"><span class="q-t">Jenis layanan yang diterima <span class="req">*</span></span><select id="layanan"></select><div class="msg">Pilih jenis layanan yang Anda terima.</div></div>
       <div class="q-block" data-k="jk"><span class="q-t">Jenis Kelamin <span class="req">*</span></span><div id="jk"></div><div class="msg">Pilih salah satu.</div></div>
       <div class="q-block" data-k="pend"><label class="q" for="pend">Pendidikan <span class="req">*</span></label><select id="pend"></select><div class="msg">Pilih pendidikan.</div></div>
       <div class="q-block" data-k="usia"><label class="q" for="usia">Usia</label><select id="usia"></select></div>
-      <div class="q-block" data-k="kerja"><span class="q-t">Pekerjaan <span class="req">*</span></span><div id="kerja"></div><input type="text" id="kerjaLain" class="hide" placeholder="Tuliskan pekerjaan Anda" style="margin-top:6px"><div class="msg">Pilih pekerjaan.</div></div>
+      <div class="q-block" data-k="kerja"><span class="q-t">Pekerjaan <span class="req">*</span></span><select id="kerja"></select><input type="text" id="kerjaLain" class="hide" placeholder="Tuliskan pekerjaan Anda" style="margin-top:6px"><div class="msg">Pilih pekerjaan.</div></div>
       <div class="q-block" data-k="dis"><span class="q-t">Apakah Anda penyandang disabilitas / pendamping penyandang disabilitas? <span class="req">*</span></span><div id="dis"></div><div class="msg">Pilih salah satu.</div></div>
+      <div class="q-block hide" id="disBox" data-k="disjenis"><span class="q-t">Jenis disabilitas apa yang Anda miliki/dampingi? <span class="req">*</span></span><div id="disJenis"></div><div class="msg">Pilih minimal satu jenis disabilitas.</div></div>
     </section>
 
-    <section class="card">
-      <h2>Penilaian Pelayanan</h2>
-      <p class="sub">Pilih jawaban yang paling sesuai dengan pengalaman Anda saat menerima layanan.</p>
-      <div id="unsur"></div>
-    </section>
+    <div id="unsur"></div>
 
-    <section class="card">
-      <h2>Kritik &amp; Saran</h2>
-      <label class="q" for="saran">Masukan untuk peningkatan layanan KPU Kabupaten Hulu Sungai Tengah</label>
-      <textarea id="saran" rows="4" placeholder="Tuliskan kritik atau saran Anda (opsional)"></textarea>
-    </section>
+    
 
-    <div class="btns"><button type="reset" class="s" id="btnReset">Bersihkan formulir</button><button type="submit" class="p">Kirim Survei</button></div>
+    <div class="btns"><button type="button" class="s hide" id="prev">← Sebelumnya</button><button type="button" class="p" id="next">Selanjutnya →</button><button type="submit" class="p hide" id="send">Kirim Survei</button></div>
   </form>
 
   <section class="card res hide" id="res">
@@ -311,24 +306,44 @@ var U=[
 ];
 var $=function(i){return document.getElementById(i)};
 function radios(box,name,list,cb){$(box).innerHTML=list.map(function(t,i){return '<label class="opt"><input type="radio" name="'+name+'" value="'+t+'"><span>'+t+'</span></label>'}).join('')}
-radios('layanan','layanan',['Layanan Pejabat Pengelola Informasi dan Dokumentasi (PPID)','Layanan Pendidikan Pemilih','Layanan Pengaduan Masyarakat','Layanan Kerjasama','Layanan Pemutakhiran Data Pemilih','Layanan Verifikasi dan Pemutakhiran Data Partai Politik']);
+sel('layanan',['Layanan Pejabat Pengelola Informasi dan Dokumentasi (PPID)','Layanan Pendidikan Pemilih','Layanan Pengaduan Masyarakat','Layanan Kerjasama','Layanan Pemutakhiran Data Pemilih','Layanan Verifikasi dan Pemutakhiran Data Partai Politik']);
 radios('jk','jk',['Laki-Laki','Perempuan']);
 radios('dis','dis',['Ya','Tidak']);
-radios('kerja','kerja',['ASN','TNI','POLRI','Swasta','Wirausaha','Ibu Rumah Tangga','Pelajar/Mahasiswa','Petani/Nelayan','Pekerja Lepas/Freelance','Pensiun','Lainnya']);
+$('disJenis').innerHTML=['Disabilitas Fisik (Tuna Daksa)','Disabilitas Intelektual (Gangguan Kemampuan Belajar, Tuna Grahita, Down Syndrome)','Disabilitas Mental (Autisme, ADHD Tuna Laras)','Disabilitas Sensory (Tuli, Tuna Rungu, Tuna Netra)'].map(function(t){return '<label class="opt"><input type="checkbox" name="disjenis" value="'+t+'"><span>'+t+'</span></label>'}).join('');
+sel('kerja',['ASN','TNI','POLRI','Swasta','Wirausaha','Ibu Rumah Tangga','Pelajar/Mahasiswa','Petani/Nelayan','Pekerja Lepas/Freelance','Pensiun','Lainnya']);
 function sel(id,list){$(id).innerHTML='<option value="">Pilih</option>'+list.map(function(t){return '<option>'+t+'</option>'}).join('')}
 sel('pend',['Tidak Sekolah','SD/Sederajat','SMP/Sederajat','SMA/Sederajat','D1/D2/D3','D4/S1','S2','S3']);
 sel('usia',['< 17 Tahun','17-25 Tahun','26-34 Tahun','35-44 Tahun','45-54 Tahun','55-65 Tahun','> 65 Tahun']);
-var last='';
-$('unsur').innerHTML=U.map(function(u,n){
-  var h=u[0]!==last?'<h3 style="margin:22px 0 0;font-size:15px;color:var(--pri);border-bottom:1px solid var(--line);padding-bottom:4px">'+u[0]+'</h3>':'';last=u[0];
-  return h+'<div class="q-block" data-k="u'+n+'"><span class="q-t">'+(n+1)+'. '+u[1]+' <span class="req">*</span></span>'+
+var secs=[];
+U.forEach(function(u,n){var g=secs[secs.length-1];if(!g||g.name!==u[0]){g={name:u[0],items:[]};secs.push(g)}g.items.push(n)});
+// Pengelompokan bagian per halaman: ubah sesuai kebutuhan
+var GRUP=[['A','B'],['C','D','E'],['F','G','H'],['I']];
+function qHtml(n){var u=U[n];
+  return '<div class="q-block" data-k="u'+n+'"><span class="q-t">'+(n+1)+'. '+u[1]+' <span class="req">*</span></span>'+
   u[2].map(function(o,i){return '<label class="opt"><input type="radio" name="u'+n+'" value="'+(i+1)+'"><span>'+'ABCD'[i]+'. '+o+'</span></label>'}).join('')+
-  '<div class="msg">Pilih salah satu penilaian.</div></div>'}).join('');
+  '<div class="msg">Pilih salah satu penilaian.</div></div>'}
+$('unsur').innerHTML=GRUP.map(function(gr){
+  var mine=secs.filter(function(g){return gr.indexOf(g.name.charAt(0))>=0});
+  var ttl='Bagian '+gr[0]+(gr.length>1?'–'+gr[gr.length-1]:'');
+  return '<section class="card step" data-title="'+ttl+'"><h2>Penilaian Pelayanan</h2><p class="sub">Pilih jawaban yang paling sesuai dengan pengalaman Anda saat menerima layanan.</p>'+
+  mine.map(function(g){return '<h3 class="sh">'+g.name+'</h3>'+g.items.map(qHtml).join('')}).join('')+'</section>'}).join('');
+// Kritik & Saran digabung ke halaman terakhir
+(function(){var c=$('unsur').querySelectorAll('.step'),lc=c[c.length-1];
+  lc.setAttribute('data-title',lc.getAttribute('data-title')+' & Kritik dan Saran');
+  lc.insertAdjacentHTML('beforeend','<h3 class="sh">Kritik dan Saran</h3><label class="q" for="saran">Masukan untuk peningkatan layanan KPU Kabupaten Hulu Sungai Tengah (opsional)</label><textarea id="saran" rows="4" placeholder="Tuliskan kritik atau saran Anda"></textarea>');
+})();
 
 var f=$('f');
-function val(n){var c=f.querySelector('input[name="'+n+'"]:checked');return c?c.value:''}
+var steps=Array.prototype.slice.call(f.querySelectorAll('.step')),step=0;
+function val(n){var c=f.querySelector('input[name="'+n+'"]:checked');if(c)return c.value;var e=$(n);return e&&e.tagName==='SELECT'?e.value:''}
+function disSel(){return Array.prototype.map.call(f.querySelectorAll('input[name="disjenis"]:checked'),function(x){return x.value})}
+function showStep(i){
+  step=i;steps.forEach(function(el,k){el.classList.toggle('hide',k!==i)});
+  $('prev').classList.toggle('hide',i===0);$('next').classList.toggle('hide',i===steps.length-1);$('send').classList.toggle('hide',i!==steps.length-1);
+  progress();window.scrollTo({top:0,behavior:'smooth'});
+}
 function progress(){
-  var total=7+U.length,done=0;
+  var dj=val('dis')==='Ya',total=7+U.length+(dj?1:0),done=0;
   if(val('layanan'))done++;
   if($('nama').value.trim())done++;
   if($('tgl').value)done++;
@@ -336,16 +351,18 @@ function progress(){
   if($('pend').value)done++;
   if(val('kerja'))done++;
   if(val('dis'))done++;
+  if(dj&&disSel().length)done++;
   U.forEach(function(_,n){if(val('u'+n))done++});
   var p=Math.round(done/total*100);
-  $('progB').style.width=p+'%';$('progT').textContent='Terisi '+p+'% ('+done+' dari '+total+' pertanyaan wajib)';
+  $('progB').style.width=p+'%';$('progT').textContent='Langkah '+(step+1)+' dari '+steps.length+' · '+steps[step].getAttribute('data-title')+' · Terisi '+p+'%';
 }
 f.addEventListener('input',function(e){
-  if(e.target.name==='kerja')$('kerjaLain').classList.toggle('hide',val('kerja')!=='Lainnya');
+  if(e.target.name==='dis'){var y=val('dis')==='Ya';$('disBox').classList.toggle('hide',!y);if(!y)f.querySelectorAll('input[name="disjenis"]').forEach(function(x){x.checked=false})}
+  if(e.target.id==='kerja')$('kerjaLain').classList.toggle('hide',val('kerja')!=='Lainnya');
   var b=e.target.closest('.q-block');if(b)b.classList.remove('bad');
   progress();
 });
-f.addEventListener('reset',function(){setTimeout(function(){$('kerjaLain').classList.add('hide');progress()},0)});
+f.addEventListener('reset',function(){setTimeout(function(){$('kerjaLain').classList.add('hide');$('disBox').classList.add('hide');progress()},0)});
 
 function mutu(s){
   if(s>=88.31)return 'Mutu A – Sangat Baik';
@@ -353,18 +370,28 @@ function mutu(s){
   if(s>=65)return 'Mutu C – Kurang Baik';
   return 'Mutu D – Tidak Baik';
 }
-f.addEventListener('submit',function(e){
-  e.preventDefault();
+function runChecks(scope){
   var bad=[];
-  function chk(k,ok){var b=f.querySelector('[data-k="'+k+'"]');if(!b)return;b.classList.toggle('bad',!ok);if(!ok)bad.push(b)}
+  function chk(k,ok){var b=f.querySelector('[data-k="'+k+'"]');if(!b||(scope&&!scope.contains(b)))return;b.classList.toggle('bad',!ok);if(!ok)bad.push(b)}
   chk('layanan',!!val('layanan'));
   chk('nama',!!$('nama').value.trim());
   var t=$('tgl').value;chk('tgl',!!t&&t>=cur.rentang[0]&&t<=cur.rentang[1]);
   chk('jk',!!val('jk'));chk('pend',!!$('pend').value);
   chk('kerja',!!val('kerja')&&(val('kerja')!=='Lainnya'||!!$('kerjaLain').value.trim()));
   chk('dis',!!val('dis'));
+  chk('disjenis',val('dis')!=='Ya'||disSel().length>0);
   U.forEach(function(_,n){chk('u'+n,!!val('u'+n))});
-  if(bad.length){bad[0].scrollIntoView({behavior:'smooth',block:'center'});return}
+  return bad;
+}
+function goNext(){var bad=runChecks(steps[step]);if(bad.length){bad[0].scrollIntoView({behavior:'smooth',block:'center'});return}showStep(step+1)}
+$('next').addEventListener('click',goNext);
+$('prev').addEventListener('click',function(){showStep(step-1)});
+f.addEventListener('submit',function(e){
+  e.preventDefault();
+  if(step<steps.length-1){goNext();return}
+  var bad=runChecks();
+  if(bad.length){showStep(steps.indexOf(bad[0].closest('.step')));setTimeout(function(){bad[0].scrollIntoView({behavior:'smooth',block:'center'})},60);return}
+  var t=$('tgl').value;
   var sum=0,rows='';
   U.forEach(function(u,n){var v=+val('u'+n);sum+=v;rows+='<div class="row"><span>'+(n+1)+'. '+u[1].slice(0,60)+(u[1].length>60?'…':'')+'</span><b>'+u[2][v-1]+' ('+v+')</b></div>'});
   var ikm=Math.round(sum/U.length*25*100)/100;
@@ -372,7 +399,7 @@ f.addEventListener('submit',function(e){
   var pay={waktu_kirim:new Date().toISOString(),nama:$('nama').value.trim(),tanggal_layanan:t,jenis_layanan:val('layanan'),jenis_kelamin:val('jk'),pendidikan:$('pend').value,usia:$('usia').value,
     pekerjaan:val('kerja')==='Lainnya'?'Lainnya: '+$('kerjaLain').value.trim():val('kerja'),disabilitas:val('dis')};
   U.forEach(function(u,n){pay['U'+(n+1)+' '+u[0].replace(/&amp;/g,'&')]=+val('u'+n)});
-  pay.rata_rata=Math.round(sum/U.length*100)/100;pay.nilai_ikm=ikm;pay.mutu=mutu(ikm);pay.saran=$('saran').value.trim();pay.periode=cur.nama+' Tahun 2026';
+  pay.rata_rata=Math.round(sum/U.length*100)/100;pay.nilai_ikm=ikm;pay.mutu=mutu(ikm);pay.saran=$('saran').value.trim();pay.periode=cur.nama+' Tahun 2026';pay.jenis_disabilitas=disSel().join('; ');
   var btn=f.querySelector('button[type=submit]'),old=btn.textContent;btn.disabled=true;btn.textContent='Mengirim…';
   function show(note){
     $('note').textContent=note||'';
@@ -385,7 +412,7 @@ f.addEventListener('submit',function(e){
     .catch(function(){btn.disabled=false;btn.textContent=old;alert('Gagal mengirim. Periksa koneksi internet Anda lalu coba lagi.')});
 });
 $('again').addEventListener('click',function(){
-  f.reset();f.classList.remove('hide');$('prog').classList.remove('hide');$('res').classList.add('hide');progress();window.scrollTo({top:0,behavior:'smooth'});
+  f.reset();showStep(0);f.classList.remove('hide');$('prog').classList.remove('hide');$('res').classList.add('hide');window.scrollTo({top:0,behavior:'smooth'});
 });
 
 function showView(v){$('viewPick').classList.toggle('hide',v!=='pick');$('viewForm').classList.toggle('hide',v!=='form');window.scrollTo({top:0,behavior:'smooth'})}
@@ -396,6 +423,7 @@ function openP(p){
   $('tglHint').textContent='Periode layanan '+p.nama+': '+p.tgl+'.';
   $('tglMsg').textContent='Pilih tanggal dalam periode '+p.tgl+'.';
   f.reset();f.classList.remove('hide');$('prog').classList.remove('hide');$('res').classList.add('hide');
+  showStep(0);
   try{history.replaceState(null,'','#'+p.id)}catch(e){}
   progress();showView('form');
 }
